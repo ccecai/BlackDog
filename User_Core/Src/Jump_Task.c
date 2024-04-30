@@ -32,9 +32,12 @@ int ExecuteJump(uint8_t JumpType,float JumpAngle)
 //        SetPolarPositionAll_Delay(JumpAngle + 12, stance_height, prep_time);
 
         //芜湖起飞（核心），持续时间为launch_time
-        Jump_flag = 1;
+
         AllMotorSpeedLimit(30);//速度拉满
         ChangeGainOfPID(40.0f,0.01f,0, 0);//使用刚度小，阻尼大的增益0
+        Jump_flag = 1;
+        osDelay(100);
+
         SetPolarPositionAll_Delay(JumpAngle, jump_extension, launch_time);
 
         /*

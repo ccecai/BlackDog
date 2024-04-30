@@ -107,5 +107,6 @@ void StandUp_Posture_UpDown(float vel);
 void StandUp_Posture_LeftRight(float vel,int flag);
 void Handshake(void);
 void StretchPosture(void);
+void StandUp_Posture_sway(void);
 
 #endif //MY_SCUDOG_ATTITUDE_TASK_H

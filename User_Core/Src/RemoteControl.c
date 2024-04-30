@@ -237,6 +237,6 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
     }
     else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 2)
     {
-        StretchPosture();
+        StandUp_Posture_sway();
     }
 }

@@ -17,6 +17,47 @@ void StandUp_Posture(void)
     SetCoupledThetaPositionAll();
 }
 
+void StandUp_Posture_sway(void)
+{
+    static int flag = 'f';
+    LieDown_flag = 0;
+    AllMotorSpeedLimit(0.8f);
+
+    switch (flag) {
+        case 'f':
+            Get_Target(0,4);
+            SetCoupledThetaPosition(1);
+            SetCoupledThetaPosition(3);
+
+            Get_Target(0 + 0.3f,4 + 0.3f);
+            SetCoupledThetaPosition(0);
+            SetCoupledThetaPosition(2);
+            break;
+        case 'b':
+            Get_Target(0,4);
+            SetCoupledThetaPosition(0);
+            SetCoupledThetaPosition(2);
+
+            Get_Target(0 + 0.3f,4 + 0.3f);
+            SetCoupledThetaPosition(1);
+            SetCoupledThetaPosition(3);
+            break;
+        default:
+            break;
+    }
+
+    if(flag == 'f')
+    {
+        osDelay(1000);
+        flag = 'b';
+    }
+    else if(flag == 'b')
+    {
+        osDelay(1000);
+        flag = 'f';
+    }
+}
+
 void StandUp_Posture_UpDown(float vel)
 {
     LieDown_flag = 0;
@@ -27,18 +68,17 @@ void StandUp_Posture_UpDown(float vel)
 
 void StandUp_Posture_LeftRight(float vel,int flag)
 {
+    LieDown_flag = 0;
+    AllMotorSpeedLimit(0.8f);
+
     switch (flag) {
         case 'l':
-            LieDown_flag = 0;
-            AllMotorSpeedLimit(SpeedNormal);
-            Get_Target(0 + vel,4 + vel);
+            Get_Target(0 + vel/1.4f,4 + vel/1.4f);
             SetCoupledThetaPosition(0);
             SetCoupledThetaPosition(1);
             break;
         case 'r':
-            LieDown_flag = 0;
-            AllMotorSpeedLimit(SpeedNormal);
-            Get_Target(0 + vel,4 + vel);
+            Get_Target(0 + vel/1.4f,4 + vel/1.4f);
             SetCoupledThetaPosition(2);
             SetCoupledThetaPosition(3);
             break;
