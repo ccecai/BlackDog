@@ -12,6 +12,7 @@ uint8_t LieDown_flag = 0;
 void StandUp_Posture(void)
 {
     LieDown_flag = 0;
+    ChangeGainOfPID(10.0f,0.8f,0.6f,0);
     AllMotorSpeedLimit(SpeedNormal);
     Get_Target(0,4);
     SetCoupledThetaPositionAll();
@@ -21,7 +22,8 @@ void StandUp_Posture_sway(void)
 {
     static int flag = 'f';
     LieDown_flag = 0;
-    AllMotorSpeedLimit(0.8f);
+    ChangeGainOfPID(10.0f,0.8f,0.6f,0);
+    AllMotorSpeedLimit(6.0f);
 
     switch (flag) {
         case 'f':
@@ -29,7 +31,7 @@ void StandUp_Posture_sway(void)
             SetCoupledThetaPosition(1);
             SetCoupledThetaPosition(3);
 
-            Get_Target(0 + 0.3f,4 + 0.3f);
+            Get_Target(0 - 1.2f,4 - 1.2f);
             SetCoupledThetaPosition(0);
             SetCoupledThetaPosition(2);
             break;
@@ -38,7 +40,7 @@ void StandUp_Posture_sway(void)
             SetCoupledThetaPosition(0);
             SetCoupledThetaPosition(2);
 
-            Get_Target(0 + 0.3f,4 + 0.3f);
+            Get_Target(0 - 1.2f,4 - 1.2f);
             SetCoupledThetaPosition(1);
             SetCoupledThetaPosition(3);
             break;
@@ -48,12 +50,12 @@ void StandUp_Posture_sway(void)
 
     if(flag == 'f')
     {
-        osDelay(1000);
+        osDelay(800);
         flag = 'b';
     }
     else if(flag == 'b')
     {
-        osDelay(1000);
+        osDelay(800);
         flag = 'f';
     }
 }
@@ -61,7 +63,9 @@ void StandUp_Posture_sway(void)
 void StandUp_Posture_UpDown(float vel)
 {
     LieDown_flag = 0;
+    ChangeGainOfPID(10.0f,0.8f,0.6f,0);
     AllMotorSpeedLimit(SpeedNormal);
+
     Get_Target(0 + vel,4 + vel);
     SetCoupledThetaPositionAll();
 }
@@ -69,18 +73,25 @@ void StandUp_Posture_UpDown(float vel)
 void StandUp_Posture_LeftRight(float vel,int flag)
 {
     LieDown_flag = 0;
-    AllMotorSpeedLimit(0.8f);
+    ChangeGainOfPID(6.0f,0.8f,0.6f,0);
+    AllMotorSpeedLimit(2.0f);
 
     switch (flag) {
         case 'l':
-            Get_Target(0 + vel/1.4f,4 + vel/1.4f);
+            Get_Target(0 + vel/1.6f,4 + vel/1.6f);
             SetCoupledThetaPosition(0);
             SetCoupledThetaPosition(1);
-            break;
-        case 'r':
-            Get_Target(0 + vel/1.4f,4 + vel/1.4f);
+            Get_Target(0,4);
             SetCoupledThetaPosition(2);
             SetCoupledThetaPosition(3);
+            break;
+        case 'r':
+            Get_Target(0 + vel/1.6f,4 + vel/1.6f);
+            SetCoupledThetaPosition(2);
+            SetCoupledThetaPosition(3);
+            Get_Target(0,4);
+            SetCoupledThetaPosition(0);
+            SetCoupledThetaPosition(1);
             break;
         default:
             break;
@@ -92,7 +103,7 @@ void LieDown_Posture(void)
 {
     LieDown_flag = 1;
     ChangeGainOfPID(8.0f,0.5f,0.0f,0.0f);//输出化PID
-    AllMotorSpeedLimit(SpeedMin);
+    AllMotorSpeedLimit(SpeedNormal);
     for(int i = 1;i < 9;i ++)
     {
         AngleWant_MotorX[i] = begin_pos[i];
@@ -112,9 +123,9 @@ void Trot(float direction,int8_t kind)
     switch(kind)
     {
         case 0://小步Trot
-            AllMotorSpeedLimit(SpeedNormal);
-            NewHeartbeat = 6;
-            ChangeGainOfPID(8.0f,0.6f,0.6f,0);
+            AllMotorSpeedLimit(SpeedFast);
+            NewHeartbeat = 5;
+            ChangeGainOfPID(15.0f,3.0f,0.6f,0);
 //            ChangeYawOfPID(200.0f,2.0f,3000.0f,10.0f);
 //            YawControl(yawwant, &state_detached_params[4], direction);
             gait_detached(state_detached_params[0],0.0f, 0.5f, 0.5f, 0.0f,
@@ -123,7 +134,7 @@ void Trot(float direction,int8_t kind)
         case 1://大步Trot
             AllMotorSpeedLimit(SpeedFast);
             NewHeartbeat = 5;
-            ChangeGainOfPID(12.0f,2.0f,0.6f,0);
+            ChangeGainOfPID(15.0f,0.8f,0.6f,0);
 //            ChangeYawOfPID(1000.0f,10.0f,4000.0f,15.0f);
 //            YawControl(yawwant, &state_detached_params[1], direction);
             gait_detached(state_detached_params[1],0.0f, 0.5f, 0.5f, 0.0f,

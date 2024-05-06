@@ -13,6 +13,11 @@ float times = 0.0f;
 float x,y;
 uint8_t reverse_move_flag = 0;
 
+float offset_front_0 = 0.74f;
+float offset_front_1 = 1.41f;
+float offset_back_0  = 0.74f;//(-121.9f)
+float offset_back_1  = 1.41f;//207.2f
+
 //用于复制上方状态数组作为永恒基准。
 DetachedParam StateDetachedParams_Copy[StatesMaxNum] = {0};
 //调试时用来改变生成的轨迹参数
@@ -86,15 +91,15 @@ void SetCoupledThetaPosition(int LegId)
             break;
         case 1:
             AngleWant_MotorX[3] = TargetAngle2 - offset_back_1;//+5.0f
-            AngleWant_MotorX[4] = TargetAngle1 - offset_back_0;
+            AngleWant_MotorX[4] = TargetAngle1 - offset_back_0 ;
             break;
         case 2:
             AngleWant_MotorX[5] = -TargetAngle1 + offset_front_0 ;
-            AngleWant_MotorX[6] = -TargetAngle2 + offset_front_1;
+            AngleWant_MotorX[6] = -TargetAngle2 + offset_front_1 ;
             break;
         case 3:
             AngleWant_MotorX[7] = -TargetAngle1 + offset_back_0 ;
-            AngleWant_MotorX[8] = -TargetAngle2 + offset_back_1;
+            AngleWant_MotorX[8] = -TargetAngle2 + offset_back_1 ;
             break;
         default:
             break;
@@ -194,15 +199,21 @@ void SinTrajectory (float t,GaitParams params, float gaitOffset,float leg_direti
     //足尖摆动相
     if (gp <= flightPercent) // //gp将从gaitOffset开始，因此当gaitOffset大于flightPercent时，将直接转到支撑相。
     {
-        x0 = (gp/flightPercent)*stepLength - stepLength/2.0f;////从-stepLength/2到+stepLength/2，移动时间不随stepLength改变，故stepLength越大实际移动速度越快。
-        y0 = -upAMP*sin(PI*gp/flightPercent) + stanceHeight;////围绕stanceHeight为基础进行正弦波动。同样是upAMP越大移动速度越快。
+
+            x0 = (gp/flightPercent)*stepLength - stepLength/2.0f;////从-stepLength/2到+stepLength/2，移动时间不随stepLength改变，故stepLength越大实际移动速度越快。
+            y0 = -upAMP*sin(PI*gp/flightPercent) + stanceHeight ;////围绕stanceHeight为基础进行正弦波动。同样是upAMP越大移动速度越快。
+
+
     }
     //足尖支撑相
     else ////摆动总是从正弦轨迹的起始位置处执行。
     {
-        float percentBack = (gp-flightPercent)/(1.0f-flightPercent);//percentBack与(gp/flightPercent)是一个道理
-        x0 = -percentBack*stepLength + stepLength/2.0f;////一般来说，首次进入时总是从stepLength/2开始，然后之后就向后运动。
-        y0 = downAMP*sin(PI*percentBack) + stanceHeight;//
+
+            float percentBack = (gp-flightPercent)/(1.0f-flightPercent);//percentBack与(gp/flightPercent)是一个道理
+            x0 = -percentBack*stepLength + stepLength/2.0f;////一般来说，首次进入时总是从stepLength/2开始，然后之后就向后运动。
+            y0 = downAMP*sin(PI*percentBack) + stanceHeight;//
+
+
     }
     ////经过坐标系转换后得到最终结果(angle目前都是0，从而x=x0，y=y0)
     x =  cos(angle*PI/180)*x0 + sin(angle*PI/180)*y0;
@@ -370,18 +381,18 @@ DetachedParam state_detached_params[StatesMaxNum] = {
 
         {
                 0,//小步Trot
-                {15.0f, 6.5f, 3.0f, 0.8f, 0.3f, 2.0f},
-                {15.0f, 6.5f, 3.0f, 0.8f, 0.3f, 2.0f},
-                {15.0f, 6.5f, 3.0f, 0.8f, 0.3f, 2.0f},
-                {15.0f, 6.5f, 3.0f, 0.8f, 0.3f, 2.0f}
+                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
+                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
+                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
+                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f}
         },
 
         {
                 1,//大步Trot
-                {16.0f, 11.0f, 4.0f, 1.0f, 0.28f, 4.0f},
-                {16.0f, 11.0f, 4.0f, 1.0f, 0.28f, 4.0f},
-                {16.0f, 11.0f, 4.0f, 1.0f, 0.28f, 4.0f},
-                {16.0f, 11.0f, 4.0f, 1.0f, 0.28f, 4.0f}
+                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
+                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
+                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
+                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f}
         },
 
         {

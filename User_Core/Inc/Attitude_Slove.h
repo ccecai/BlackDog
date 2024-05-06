@@ -14,10 +14,7 @@
 //#define offset_front_1 0.5346f
 //#define offset_back_0  0.1320f//(-121.9f)
 //#define offset_back_1  0.5346f//207.2f
-#define offset_front_0 0.74f
-#define offset_front_1 1.41f
-#define offset_back_0  0.74f//(-121.9f)
-#define offset_back_1  1.41f//207.2f
+
 #define PI 3.1415926535f
 //¥Û–°Õ»≥§
 #define L1 10.0f //????100mm
@@ -62,6 +59,10 @@ extern DetachedParam state_detached_params[StatesMaxNum];
 extern DetachedParam StateDetachedParams_Copy[];
 extern float AngleWant_MotorX[9];
 extern float x,y;
+extern float offset_front_0;
+extern float offset_front_1;
+extern float offset_back_0 ;//(-121.9f)
+extern float offset_back_1 ;//207.2f
 
 void Get_Target(float theta1,float theta2);
 void SetCoupledThetaPositionAll(void);

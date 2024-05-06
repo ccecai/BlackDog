@@ -406,53 +406,53 @@ void Read_beginPos(void)
 
 void Leg_Output(int legid)
 {
-    if(legid == 'l'&& Jump_flag == 0)
+    if(legid == 'l')
     {
         Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[1].Out_put,0.0f,Set_Axis1_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[2].Out_put,0.0f,Set_Axis2_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[3].Out_put,0.0f,Set_Axis3_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[4].Out_put,0.0f,Set_Axis4_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
     }
 
-    else if(legid == 'r'&& Jump_flag == 0)
+    else if(legid == 'r')
     {
         Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[5].Out_put,0.0f,Set_Axis5_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[6].Out_put,0.0f,Set_Axis6_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[7].Out_put,0.0f,Set_Axis7_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
         Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[8].Out_put,0.0f,Set_Axis8_Set_Input_Vel);
-        osDelay(5);
+        osDelay(2);
     }
 
-    else if(legid == 'l' && Jump_flag == 1)
-    {
-        Odrive_Axis_Set_Input_Torque(&hcan2,SpeedLoop[1].Out_put,Set_Axis1_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan2,SpeedLoop[2].Out_put,Set_Axis2_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan2,SpeedLoop[3].Out_put,Set_Axis3_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan2,SpeedLoop[4].Out_put,Set_Axis4_Set_Input_Torque);
-        osDelay(5);
-    }
-
-    else if(legid == 'r' && Jump_flag == 1)
-    {
-        Odrive_Axis_Set_Input_Torque(&hcan1,SpeedLoop[5].Out_put,Set_Axis5_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan1,SpeedLoop[6].Out_put,Set_Axis6_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan1,SpeedLoop[7].Out_put,Set_Axis7_Set_Input_Torque);
-        osDelay(5);
-        Odrive_Axis_Set_Input_Torque(&hcan1,SpeedLoop[8].Out_put,Set_Axis8_Set_Input_Torque);
-        osDelay(5);
-    }
+//    else if(legid == 'l' && Jump_flag == 1)
+//    {
+//        Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[1].Out_put,0.0f,Set_Axis1_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[2].Out_put,0.0f,Set_Axis2_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[3].Out_put,0.0f,Set_Axis3_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan2,AngleLoop[4].Out_put,0.0f,Set_Axis4_Set_Input_Vel);
+//        osDelay(5);
+//    }
+//
+//    else if(legid == 'r' && Jump_flag == 1)
+//    {
+//        Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[5].Out_put,0.0f,Set_Axis5_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[6].Out_put,0.0f,Set_Axis6_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[7].Out_put,0.0f,Set_Axis7_Set_Input_Vel);
+//        osDelay(5);
+//        Odrive_Axis_Set_Input_Vel(&hcan1,AngleLoop[8].Out_put,0.0f,Set_Axis8_Set_Input_Vel);
+//        osDelay(5);
+//    }
 
 }
 

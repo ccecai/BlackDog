@@ -172,26 +172,6 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
         StandUp_Posture();
     }
 
-    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[3] > 330)
-    {
-        StandUp_Posture_UpDown(abs((660-local_rc_ctrl->rc.ch[0]) / 660));
-    }
-
-    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[3] < -330)
-    {
-        StandUp_Posture_UpDown(-(abs((-660-local_rc_ctrl->rc.ch[0]) / 660)));
-    }
-
-    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[2] > 330)
-    {
-        StandUp_Posture_LeftRight(abs((660-local_rc_ctrl->rc.ch[0]) / 660),'r');
-    }
-
-    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[2] < -330)
-    {
-        StandUp_Posture_LeftRight(abs((-660-local_rc_ctrl->rc.ch[0]) / 660),'l');
-    }
-
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[1] > 330)
     {
         Trot(Forward,1);
@@ -219,17 +199,25 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 2 && local_rc_ctrl->rc.ch[1] > 330)
     {
-        Walk(Forward,0);
+        Trot(Forward,0);
     }
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 2 && local_rc_ctrl->rc.ch[1] < -330)
     {
-        Walk(Backward,0);
+        Trot(Backward,0);
+    }
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 2 && local_rc_ctrl->rc.ch[0] > 330)
+    {
+        Turn('r','f');
     }
 
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 2 && local_rc_ctrl->rc.ch[0] < -330)
+    {
+        Turn('l','f');
+    }
     else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 1)
     {
-        ExecuteJump(Standard_Jump,67);
+        StretchPosture();
     }
     else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 3)
     {
@@ -238,5 +226,34 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
     else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 2)
     {
         StandUp_Posture_sway();
+    }
+    if(local_rc_ctrl->rc.ch[4] == -660)
+    {
+        ExecuteJump(Standard_Jump,67);
+    }
+
+    if(local_rc_ctrl->rc.ch[4] == 660)
+    {
+        ExecuteJump(High_Jump,88);
+    }
+
+    if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[3] > 330)
+    {
+        StandUp_Posture_UpDown(abs((660-local_rc_ctrl->rc.ch[0]) / 660));
+    }
+
+    if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[3] < -330)
+    {
+        StandUp_Posture_UpDown(-(abs((-660-local_rc_ctrl->rc.ch[0]) / 660)));
+    }
+
+    if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[2] > 330)
+    {
+        StandUp_Posture_LeftRight(abs((660-local_rc_ctrl->rc.ch[0]) / 660),'r');
+    }
+
+    if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[2] < -330)
+    {
+        StandUp_Posture_LeftRight(abs((-660-local_rc_ctrl->rc.ch[0]) / 660),'l');
     }
 }

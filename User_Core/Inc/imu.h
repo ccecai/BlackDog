@@ -1,18 +1,31 @@
-//
-// Created by 1 on 2024-01-17.
-//
+/**
+  ****************************(C) COPYRIGHT 2019 DJI****************************
+  * @file       INS_task.c/h
+  * @brief      use bmi088 to calculate the euler angle. no use ist8310, so only
+  *             enable data ready pin to save cpu time.enalbe bmi088 data ready
+  *             enable spi DMA to save the time spi transmit
+  *             主要利用陀螺仪bmi088，磁力计ist8310，完成姿态解算，得出欧拉角，
+  *             提供通过bmi088的data ready 中断完成外部触发，减少数据等待延迟
+  *             通过DMA的SPI传输节约CPU时间.
+  * @note
+  * @history
+  *  Version    Date            Author          Modification
+  *  V1.0.0     Dec-26-2018     RM              1. done
+  *  V2.0.0     Nov-11-2019     RM              1. support bmi088, but don't support mpu6500
+  *
+  @verbatim
+  ==============================================================================
 
-#ifndef ROBOMASTER_C_DEMO_IMU_H
-#define ROBOMASTER_C_DEMO_IMU_H
+  ==============================================================================
+  @endverbatim
+  ****************************(C) COPYRIGHT 2019 DJI****************************
+  */
 
+#ifndef INS_Task_H
+#define INS_Task_H
 #include "struct_typedef.h"
 #include "main.h"
-#include "BMI088Middleware.h"
-#include "BMI088reg.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
-#include "stack_macros.h"
+#include "printf.h"
 
 #define SPI_DMA_GYRO_LENGHT       8
 #define SPI_DMA_ACCEL_LENGHT      9
@@ -60,35 +73,13 @@
 #define INS_MAG_Y_ADDRESS_OFFSET 1
 #define INS_MAG_Z_ADDRESS_OFFSET 2
 
-extern uint8_t gyro_update_flag;
-extern uint8_t accel_update_flag;
-extern uint8_t accel_temp_update_flag;
-extern uint8_t mag_update_flag;
-extern uint8_t imu_start_dma_flag;
+extern volatile uint8_t gyro_update_flag ;
+extern volatile uint8_t accel_update_flag ;
+extern volatile uint8_t accel_temp_update_flag ;
+extern volatile uint8_t mag_update_flag ;
+extern volatile uint8_t imu_start_dma_flag ;
+extern fp32 INS_angle[3];
 
-extern void AHRS_init(fp32 quat[4], fp32 accel[3], fp32 mag[3]);
-extern void AHRS_update(fp32 quat[4], fp32 time, fp32 gyro[3], fp32 accel[3], fp32 mag[3]);
-extern void get_angle(fp32 quat[4], fp32 *yaw, fp32 *pitch, fp32 *roll);
-
-extern ist8310_real_data_t ist8310_real_data;
-
-extern fp32 INS_quat[4];
-extern fp32 INS_angle[3];      //euler angle, unit rad.欧拉角 单位 rad
-
-extern uint8_t gyro_dma_rx_buf[SPI_DMA_GYRO_LENGHT];
-extern uint8_t gyro_dma_tx_buf[SPI_DMA_GYRO_LENGHT];
-
-extern uint8_t accel_dma_rx_buf[SPI_DMA_ACCEL_LENGHT];
-extern uint8_t accel_dma_tx_buf[SPI_DMA_ACCEL_LENGHT];
-
-extern uint8_t accel_temp_dma_rx_buf[SPI_DMA_ACCEL_TEMP_LENGHT];
-extern uint8_t accel_temp_dma_tx_buf[SPI_DMA_ACCEL_TEMP_LENGHT];
-
-extern void AHRS_init(fp32 quat[4], fp32 accel[3], fp32 mag[3]);
-
-void imu_temp_control(fp32 temp);
-
-void imu_cmd_spi_dma(void);
 /**
   * @brief          imu task, init bmi088, ist8310, calculate the euler angle
   * @param[in]      pvParameters: NULL
@@ -193,4 +184,5 @@ extern const fp32 *get_accel_data_point(void);
   * @retval         INS_mag的指针
   */
 extern const fp32 *get_mag_data_point(void);
-#endif //ROBOMASTER_C_DEMO_IMU_H
+
+#endif

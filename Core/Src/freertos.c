@@ -26,11 +26,13 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "imu.h"
+#include "led_flow_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 osThreadId imuTaskHandle;
+osThreadId led_RGB_flow_handle;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -74,6 +76,9 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
+/* GetTimerTaskMemory prototype (linked to static allocation support) */
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize );
+
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
 static StackType_t xIdleStack[configMINIMAL_STACK_SIZE];
@@ -86,6 +91,19 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
   /* place for user code */
 }
 /* USER CODE END GET_IDLE_TASK_MEMORY */
+
+/* USER CODE BEGIN GET_TIMER_TASK_MEMORY */
+static StaticTask_t xTimerTaskTCBBuffer;
+static StackType_t xTimerStack[configTIMER_TASK_STACK_DEPTH];
+
+void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize )
+{
+  *ppxTimerTaskTCBBuffer = &xTimerTaskTCBBuffer;
+  *ppxTimerTaskStackBuffer = &xTimerStack[0];
+  *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+  /* place for user code */
+}
+/* USER CODE END GET_TIMER_TASK_MEMORY */
 
 /**
   * @brief  FreeRTOS initialization
@@ -111,8 +129,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-    osThreadDef(imuTask, INS_task, osPriorityRealtime, 0, 1024);
-    imuTaskHandle = osThreadCreate(osThread(imuTask), NULL);
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -137,11 +154,17 @@ void MX_FREERTOS_Init(void) {
   GIM_Output_RighHandle = osThreadCreate(osThread(GIM_Output_Righ), NULL);
 
   /* definition and creation of PID */
-  osThreadDef(PID, PID_Task, osPriorityRealtime, 0, 512);
+  osThreadDef(PID, PID_Task, osPriorityAboveNormal, 0, 512);
   PIDHandle = osThreadCreate(osThread(PID), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+    osThreadDef(imuTask, INS_task, osPriorityRealtime, 0, 1024);
+    imuTaskHandle = osThreadCreate(osThread(imuTask), NULL);
+
+    osThreadDef(led, led_RGB_flow_task, osPriorityNormal, 0, 256);
+    led_RGB_flow_handle = osThreadCreate(osThread(led), NULL);
+
     vTaskResume(StartDebugTaskHandle);
     vTaskSuspend(GIM_Output_LeftHandle);
     vTaskSuspend(GIM_Output_RighHandle);
@@ -170,7 +193,6 @@ void StartDebug(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-      LED_Flash();
 
       osDelay(500);
   }
@@ -200,10 +222,10 @@ void RemoteControl(void const * argument)
        *
        ****************/
       Posture_Controller(local_rc_ctrl);
-//      usart_printf("%f\n",INS_angle[0]);
+      usart_printf("%f,%f,%f\n",INS_angle[0],INS_angle[1],INS_angle[2]);
 //      usart_printf("%f,%f\n",GIM6010[1].data_pos,GIM6010[2].data_pos);
 //      usart_printf("%f,%f\n",GIM6010[1].data_pos,AngleLoop[1].Out_put);
-
+//      usart_printf("%d\n",rc_ctrl.rc.ch[4]);
       osDelay(5);
   }
   /* USER CODE END RemoteControl */
@@ -299,25 +321,16 @@ void PID_Task(void const * argument)
   {
       for(uint8_t id = 1;id < 9;id ++)
       {
-          if(LieDown_flag == 0 && Jump_flag == 0)
+          if(LieDown_flag == 0)
           {
               SetPoint(&AngleLoop[id], AngleWant_MotorX[id], id);
               PID_PosLocCalc(&AngleLoop[id], GIM6010[id].data_pos - begin_pos[id], id);
           }
-          else if(LieDown_flag == 1 && Jump_flag == 0)
+          else if(LieDown_flag == 1)
           {
               SetPoint(&AngleLoop[id], AngleWant_MotorX[id], id);
               PID_PosLocCalc(&AngleLoop[id], GIM6010[id].data_pos, id);
           }
-          else if(Jump_flag == 1)
-          {
-              SetPoint(&AngleLoop[id], AngleWant_MotorX[id], id);
-              PID_PosLocCalc(&AngleLoop[id], GIM6010[id].data_pos - begin_pos[id], id);
-              SetPoint(&SpeedLoop[id],AngleLoop[id].Out_put,id);
-              PID_PosLocCalc(&SpeedLoop[id], GIM6010[id].data_vel, id);
-              AllMotorSpeedLimit(6.0f);
-          }
-
       }
 
       osDelay(1);
