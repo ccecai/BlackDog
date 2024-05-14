@@ -193,7 +193,6 @@ void StartDebug(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-
       osDelay(500);
   }
   /* USER CODE END StartDebug */

@@ -7,6 +7,8 @@
 void Mymain_Init(void)
 {
     HAL_TIM_Base_Start(&htim5);
+    HAL_TIM_Base_Start(&htim4);
+    HAL_TIM_Base_Start(&htim3);
     //start pwm channel
     //¿ªÆôPWMÍ¨µÀ
     HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
