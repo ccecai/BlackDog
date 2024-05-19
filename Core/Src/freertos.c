@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "imu.h"
 #include "led_flow_task.h"
+#include "Screen.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -187,13 +188,17 @@ void StartDebug(void const * argument)
   /* USER CODE BEGIN StartDebug */
     Mymain_Init();
 
-    osDelay(2000);
-
     vTaskResume(GIM6010InitHandle);
   /* Infinite loop */
   for(;;)
   {
-      osDelay(500);
+//      __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,50);
+//
+//      osDelay(1000);
+//
+//      __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,250);
+
+      osDelay(1000);
   }
   /* USER CODE END StartDebug */
 }
@@ -221,7 +226,8 @@ void RemoteControl(void const * argument)
        *
        ****************/
       Posture_Controller(local_rc_ctrl);
-      usart_printf("%f,%f,%f\n",INS_angle[0],INS_angle[1],INS_angle[2]);
+//      usart_printf("%d,%d,%d\n",Screen_Data[0],Screen_Data[2],Screen_Data[3]);
+//      usart_printf("%f,%f,%f\n",INS_angle[0],INS_angle[1],INS_angle[2]);
 //      usart_printf("%f,%f\n",GIM6010[1].data_pos,GIM6010[2].data_pos);
 //      usart_printf("%f,%f\n",GIM6010[1].data_pos,AngleLoop[1].Out_put);
 //      usart_printf("%d\n",rc_ctrl.rc.ch[4]);

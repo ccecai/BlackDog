@@ -458,14 +458,14 @@ void Leg_Output(int legid)
 
 void Turn_AllMotor_to_USB(void)
 {
-    Odrive_CAN_to_USB(&hcan2,Turn_Axis1_to_USB);
-    osDelay(2);
-    Odrive_CAN_to_USB(&hcan2,Turn_Axis2_to_USB);
-    osDelay(2);
-    Odrive_CAN_to_USB(&hcan2,Turn_Axis3_to_USB);
-    osDelay(2);
-    Odrive_CAN_to_USB(&hcan2,Turn_Axis4_to_USB);
-    osDelay(2);
+//    Odrive_CAN_to_USB(&hcan2,Turn_Axis1_to_USB);
+//    osDelay(2);
+//    Odrive_CAN_to_USB(&hcan2,Turn_Axis2_to_USB);
+//    osDelay(2);
+//    Odrive_CAN_to_USB(&hcan2,Turn_Axis3_to_USB);
+//    osDelay(2);
+//    Odrive_CAN_to_USB(&hcan2,Turn_Axis4_to_USB);
+//    osDelay(2);
 
     Odrive_CAN_to_USB(&hcan1,Turn_Axis5_to_USB);
     osDelay(2);

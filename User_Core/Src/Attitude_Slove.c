@@ -389,10 +389,10 @@ DetachedParam state_detached_params[StatesMaxNum] = {
 
         {
                 1,//大步Trot
-                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
-                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
-                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f},
-                {16.2f, 10.0f, 4.0f, 0.8f, 0.3f, 3.0f}
+                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f},
+                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f},
+                {16.2f, 10.0f, 2.0f, 1.0f, 0.25f, 3.0f},
+                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f}
         },
 
         {
@@ -412,10 +412,10 @@ DetachedParam state_detached_params[StatesMaxNum] = {
         },
         {   //跷跷板  这个参数之前比赛测试时是可以爬上去的（强制让前后腿的高度不一样，而不是PID）
                 4,
-                {15.0f, 7.0f, 3.5f, 0.8f, 0.28f, 2.5f}, //小步子可以迈上去
-                {15.0f, 7.0f, 3.5f, 0.8f, 0.28f, 2.5f},
-                {15.0f, 7.0f, 3.5f, 0.8f, 0.28f, 2.5f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
-                {15.0f, 7.0f, 3.5f, 0.8f, 0.28f, 2.5f}
+                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f}, //小步子可以迈上去
+                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f},
+                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
+                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f}
         },
 };
 

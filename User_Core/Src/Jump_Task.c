@@ -22,19 +22,19 @@ int ExecuteJump(uint8_t JumpType,float JumpAngle)
         const uint16_t strech_time = 150;  //落地并用力支撑的时间              [s]  0.3（这个时间结束后就会立刻进入站立态了）
         /*跳跃的姿态把控（调节时，可按0.1的整数倍进行加减调整，如（LegSquatLenth-0.4））*/
         const float stance_height = LegLenthMin;  //跳跃之前腿的高度  [cm]，理论上应等于LegSquatLenth 11.2f，这里测试跳跃时可以使用LegLenthMin 10.7f
-        const float jump_extension = LegLenthMax; //伸展跳跃的最大伸腿长度      [cm]，理论上应等于LegLenthMax 28
+        const float jump_extension = LegLenthExtremeMax; //伸展跳跃的最大伸腿长度      [cm]，理论上应等于LegLenthMax 28
         const float jump_flylegheight = LegStandLenth; //飞翔时腿长度   [cm]，经验上应介于LegLenthMax 28与LegStandLenth 18.0f之间，是一个适中的值。
         const float jump_landlegheight = LegStandLenth; //落地时腿长度  [cm]，理论上应等于LegStandLenth
         //下蹲，准备起跳，持续时间为prep_time
         AllMotorSpeedLimit(SpeedFast);
         ChangeGainOfPID(12.0f, 1.0f, 0, 0);//使用刚度小，阻尼大的增益
-        SetPolarPositionAll_Delay(JumpAngle + 3, stance_height, prep_time);
+        SetPolarPositionAll_Delay(JumpAngle + 2, stance_height, prep_time);
 //        SetPolarPositionAll_Delay(JumpAngle + 12, stance_height, prep_time);
 
         //芜湖起飞（核心），持续时间为launch_time
 
         AllMotorSpeedLimit(30);//速度拉满
-        ChangeGainOfPID(50.0f,0.01f,0, 0);//使用刚度小，阻尼大的增益0
+        ChangeGainOfPID(50.0f,0.1f,0, 0);//使用刚度小，阻尼大的增益0
         Jump_flag = 1;
         osDelay(100);
 
@@ -79,7 +79,7 @@ int ExecuteJump(uint8_t JumpType,float JumpAngle)
         const uint16_t strech_time = 100;  //落地并用力支撑的时间              [s]  0.3（这个时间结束后就会立刻进入站立态了）
         /*跳跃的姿态把控（调节时，可按0.1的整数倍进行加减调整，如（LegSquatLenth-0.4））*/
         const float stance_height = LegLenthMin;  //跳跃之前腿的高度  [cm]，理论上应等于LegSquatLenth 11.2f，这里测试跳跃时可以使用LegLenthMin 10.7f
-        const float jump_extension = LegLenthMax; //伸展跳跃的最大伸腿长度      [cm]，理论上应等于LegLenthMax 28
+        const float jump_extension = LegLenthExtremeMax; //伸展跳跃的最大伸腿长度      [cm]，理论上应等于LegLenthMax 28
         const float jump_flylegheight = LegStandLenth; //飞翔时腿长度   [cm]，经验上应介于LegLenthMax 28与LegStandLenth 18.0f之间，是一个适中的值。
         const float jump_landlegheight = LegStandLenth; //落地时腿长度  [cm]，理论上应等于LegStandLenth 18.0f
         //下蹲，准备起跳，持续时间为prep_time
@@ -88,7 +88,7 @@ int ExecuteJump(uint8_t JumpType,float JumpAngle)
         SetPolarPositionAll_Delay(JumpAngle,stance_height,prep_time);
         //芜湖起飞（核心），持续时间为launch_time
         AllMotorSpeedLimit(30);
-        ChangeGainOfPID(50.0f,0.01f,0, 0);//使用刚度小，阻尼大的增益0
+        ChangeGainOfPID(50.0f,0.1f,0, 0);//使用刚度小，阻尼大的增益0
         Jump_flag = 1;
         osDelay(100);
 
