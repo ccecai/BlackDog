@@ -192,12 +192,6 @@ void StartDebug(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-//      __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,50);
-//
-//      osDelay(1000);
-//
-//      __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,250);
-
       osDelay(1000);
   }
   /* USER CODE END StartDebug */

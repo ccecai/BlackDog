@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "Screen.h"
+#include "Subordinate_Desk.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -59,7 +60,7 @@ void MX_USART1_UART_Init(void)
   }
   /* USER CODE BEGIN USART1_Init 2 */
     __HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);//启用串口5 空闲接受中断
-    HAL_UART_Receive_DMA(&huart1,(uint8_t *)&Screen_Data,Screen_Length);//使能串口5 DMA接受
+    HAL_UART_Receive_DMA(&huart1,(uint8_t *)&Desk_Data,Length_of_Desk);//使能串口5 DMA接受
   /* USER CODE END USART1_Init 2 */
 
 }
