@@ -32,8 +32,6 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "can_rec.h"
-#include "Key.h"
-#include "LED.h"
 #include "Mymain.h"
 #include "pid.h"
 #include "printf.h"

@@ -12,6 +12,8 @@ Feedback_pos Position;
 Feedback_vel Speed;
 Feedback_pos Position_can2;
 Feedback_vel Speed_can2;
+Feedback_Tor Torque;
+Feedback_Tor Torque2;
 
 /**
  * 输出目标速度值

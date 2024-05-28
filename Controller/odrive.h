@@ -19,10 +19,17 @@ typedef union
     float data_vel;
 }Feedback_vel;
 
+typedef union
+{
+    uint8_t data_8[4];
+    float data_Torque;
+}Feedback_Tor;
+
 typedef struct
 {
     float data_pos;
     float data_vel;
+    float data_Torque;
 }Feedback;
 /**
  * 输出速度模式所用的结构体
@@ -98,6 +105,19 @@ typedef union
 #define Axis6_ID 0x0C0		//6<<5
 #define Axis7_ID 0x0E0		//7<<5
 #define Axis8_ID 0x100		//8<<5
+
+/**
+ * 接收力矩信息数据的id
+ */
+
+#define Axis1_ReceiveTor_ID 0x020 + 0x01c
+#define Axis2_ReceiveTor_ID 0x040 + 0x01c
+#define Axis3_ReceiveTor_ID 0x060 + 0x01c
+#define Axis4_ReceiveTor_ID 0x080 + 0x01c
+#define Axis5_ReceiveTor_ID 0x0A0 + 0x01c
+#define Axis6_ReceiveTor_ID 0x0C0 + 0x01c
+#define Axis7_ReceiveTor_ID 0x0E0 + 0x01c
+#define Axis8_ReceiveTor_ID 0x100 + 0x01c
 
 /**
  * 让八个电机停止转动，是MCU发给电机
@@ -279,6 +299,8 @@ extern Feedback_pos Position;
 extern Feedback_vel Speed;
 extern Feedback_pos Position_can2;
 extern Feedback_vel Speed_can2;
+extern Feedback_Tor Torque;
+extern Feedback_Tor Torque2;
 
 void Odrive_Axis_Set_Input_Vel(CAN_HandleTypeDef *_hcan, float Input_Vel,float Torque,uint32_t stdid);
 void Odrive_Axis_Set_Input_Position(CAN_HandleTypeDef *_hcan, float Input_Pos,int16_t Vel_FF,int16_t Torque_FF,uint32_t stdid);

@@ -48,11 +48,11 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(${includes} User_Core/Inc)
+include_directories(${includes} User_Core/Inc Bsp Controller Device/BMI088 Device/DESK Device/DT7 Device/IST8310 Device/SCREEN DogSolve)
 
 add_definitions(${defines})
 
-file(GLOB_RECURSE SOURCES ${sources} "User_Core/*.*")
+file(GLOB_RECURSE SOURCES ${sources} "User_Core/*.*" "DogSolve/*.*" "Device/*.*" "Controller/*.*" "Bsp/*.*")
 
 set(LINKER_SCRIPT $${CMAKE_SOURCE_DIR}/${linkerScript})
 

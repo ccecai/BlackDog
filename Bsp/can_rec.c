@@ -177,11 +177,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)  //接收回调函数
 {
     HAL_StatusTypeDef HAL_RetVal;
     CAN_RxHeaderTypeDef RxHeader;
-    union_64 rxdata;
     uint8_t data_8[8];
     uint8_t data_8_can2[8];
     /*电机号记录*/
-    uint8_t index;
+    uint8_t index_pv;
+    uint8_t index_t;
 
     if(hcan == &hcan1)
     {
@@ -189,23 +189,44 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)  //接收回调函数
 
         if(HAL_RetVal == HAL_OK)
         {
-            index = (RxHeader.StdId - 0x009) >> 5;
-
-            for(uint8_t i = 0;i < 4;i ++)
+            if(RxHeader.StdId >= Get_Axis1_Encoder && RxHeader.StdId <= Get_Axis1_Encoder)
             {
-                Position.data_8[i] = data_8[i];
-                Speed.data_8[i] = data_8[i + 4];
+                index_pv = (RxHeader.StdId - 0x009) >> 5;
+
+                for(uint8_t i = 0;i < 4;i ++)
+                {
+                    Position.data_8[i] = data_8[i];
+                    Speed.data_8[i] = data_8[i + 4];
+                }
+
+                if(Position.data_pos == 0)
+                {
+
+                }
+                else
+                {
+                    GIM6010[index_pv].data_pos = Position.data_pos;
+                    GIM6010[index_pv].data_vel = Speed.data_vel;
+                }
             }
 
-            if(Position.data_pos == 0)
+            else if(RxHeader.StdId >= Axis1_ReceiveTor_ID && RxHeader.StdId <= Axis8_ReceiveTor_ID)
             {
+                index_t = (RxHeader.StdId - 0x01c) >> 5;
 
+                for(uint8_t i = 0;i < 4;i ++)
+                {
+                    Torque.data_8[i] = data_8[i + 4];
+                }
+
+                if(Torque.data_Torque == 0)
+                {
+
+                }
+                else
+                    GIM6010[index_t].data_Torque = Torque.data_Torque;
             }
-            else
-            {
-                GIM6010[index].data_pos = Position.data_pos;
-                GIM6010[index].data_vel = Speed.data_vel;
-            }
+
             __HAL_CAN_ENABLE_IT(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);   //清一下，不然就卡住了
         }
     }
@@ -219,7 +240,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)  //接收回调函数
 
             if(RxHeader.StdId >= Get_Axis1_Encoder && RxHeader.StdId <= Get_Axis8_Encoder)
             {
-                index = (RxHeader.StdId - 0x009) >> 5;
+                index_pv = (RxHeader.StdId - 0x009) >> 5;
 
                 for(uint8_t i = 0;i < 4;i ++)
                 {
@@ -233,12 +254,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)  //接收回调函数
                 }
                 else
                 {
-                    GIM6010[index].data_pos = Position_can2.data_pos;
-                    GIM6010[index].data_vel = Speed_can2.data_vel;
+                    GIM6010[index_pv].data_pos = Position_can2.data_pos;
+                    GIM6010[index_pv].data_vel = Speed_can2.data_vel;
                 }
 
-
             }
+
+            else if(RxHeader.StdId >= Axis1_ReceiveTor_ID && RxHeader.StdId <= Axis8_ReceiveTor_ID)
+            {
+                index_t = (RxHeader.StdId - 0x01c) >> 5;
+
+                for(uint8_t i = 0;i < 4;i ++)
+                {
+                    Torque2.data_8[i] = data_8_can2[i + 4];
+                }
+
+                if(Torque2.data_Torque == 0)
+                {
+
+                }
+                else
+                    GIM6010[index_t].data_Torque = Torque2.data_Torque;
+            }
+
             __HAL_CAN_ENABLE_IT(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);   //清一下，不然就卡住了
         }
     }
