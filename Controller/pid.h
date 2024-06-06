@@ -18,6 +18,13 @@
 typedef struct
 {
     float Setpoint;
+    float Last_Point;
+
+    float Point_Error;
+    float Last_Point_Error;
+
+    float FF_Kp;
+    float FF_Kd;
 
     float SumError;
     float SumError_limit;
@@ -43,7 +50,7 @@ extern uint8_t OnlyPosLoop;
 extern PIDTypeDef YawLoop;
 
 void PID_Init(PIDTypeDef *pid);
-void PID_Set_KP_KI_KD(PIDTypeDef *pid,float kp,float ki,float kd);
+void PID_Set_KP_KI_KD(PIDTypeDef *pid,float kp,float ki,float kd,float ff_kp,float ff_kd);
 void SetPoint(PIDTypeDef *pid,float want,uint8_t id);
 void SetPoint_Speed(PIDTypeDef *pid,float want);
 void PID_PosLocCalc(PIDTypeDef *pid, float feedbackpos,uint8_t id);

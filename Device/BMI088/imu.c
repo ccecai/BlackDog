@@ -130,7 +130,7 @@ void INS_task(void const *pvParameters)
     BMI088_read(bmi088_real_data.gyro, bmi088_real_data.accel, &bmi088_real_data.temp);
 
     PID_Init(&imu_temp_pid);
-    PID_Set_KP_KI_KD(&imu_temp_pid,1600.0f,0.2f,0.0f);
+    PID_Set_KP_KI_KD(&imu_temp_pid,1600.0f,0.2f,0.0f,0,0);
     imu_temp_pid.Output_limit = 4500.0f;
     imu_temp_pid.Iout_limit = 4400.0f;
 
