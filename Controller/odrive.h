@@ -289,7 +289,7 @@ typedef union
 
 #define SpeedMax 6.9f
 #define SpeedFast 6.6f
-#define SpeedNormal 4.0f
+#define SpeedNormal 6.0f
 #define SpeedMin 1.0f
 #define ReductionRatio 8
 

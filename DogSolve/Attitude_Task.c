@@ -12,7 +12,7 @@ uint8_t LieDown_flag = 0;
 void StandUp_Posture(void)
 {
     LieDown_flag = 0;
-    ChangeGainOfPID(10.0f,0.8f,0.6f,0);
+    ChangeGainOfPID(15.0f,5.0f,0.6f,0);
     AllMotorSpeedLimit(SpeedNormal);
     Get_Target(0,4);
     SetCoupledThetaPositionAll();
@@ -106,7 +106,7 @@ void LieDown_Posture(void)
     AllMotorSpeedLimit(SpeedNormal);
     for(int i = 1;i < 9;i ++)
     {
-        AngleWant_MotorX[i] = begin_pos[i];
+        AngleWant_MotorX[i] = 0.0f;
     }
 }
 void MarkingTime(void)

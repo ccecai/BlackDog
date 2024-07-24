@@ -17,7 +17,7 @@ void usart_printf(const char *format, ...)
     length = vsnprintf((char *) send_buf, TX_BUF_SIZE, (const char *) format, args);
     va_end(args);
 
-    HAL_UART_Transmit_DMA(&huart6, (uint8_t *) send_buf, length);
+    HAL_UART_Transmit_DMA(&huart1, (uint8_t *) send_buf, length);
 }
 
 void usart_printf1(const char *format, ...)

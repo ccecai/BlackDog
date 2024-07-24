@@ -220,12 +220,8 @@ void RemoteControl(void const * argument)
        *
        ****************/
       Posture_Controller(local_rc_ctrl);
-//      usart_printf("%d,%d,%d\n",Screen_Data[0],Screen_Data[2],Screen_Data[3]);
-//      usart_printf("%f,%f,%f\n",INS_angle[0],INS_angle[1],INS_angle[2]);
-//      usart_printf("%f,%f\n",GIM6010[1].data_pos,GIM6010[2].data_pos);
-//      usart_printf("%f,%f\n",GIM6010[1].data_pos,AngleLoop[1].Out_put);
-//      usart_printf("%d\n",rc_ctrl.rc.ch[4]);
-      osDelay(5);
+
+      osDelay(1);
   }
   /* USER CODE END RemoteControl */
 }
@@ -265,7 +261,7 @@ void GIM6010InitTask(void const * argument)
     Motor_Init();
 
     Eight_PID_Init();
-    ChangeGainOfPID(8.0f,0.8f,4.0f,0.1f);//输出化PID
+    ChangeGainOfPID(15.0f,5.0f,4.0f,0.1f);//输出化PID
 
     osDelay(1000);
 

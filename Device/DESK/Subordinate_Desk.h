@@ -8,9 +8,10 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-#define Length_of_Desk 5
+#define Length_of_Desk 10
 
 extern uint8_t Desk_Data[Length_of_Desk];
+extern uint16_t TOF_Distance;
 
 void Process(void );
 

@@ -59,8 +59,7 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-    __HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);//启用串口5 空闲接受中断
-    HAL_UART_Receive_DMA(&huart1,(uint8_t *)&Desk_Data,Length_of_Desk);//使能串口5 DMA接受
+
   /* USER CODE END USART1_Init 2 */
 
 }
@@ -118,7 +117,8 @@ void MX_USART6_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART6_Init 2 */
-
+    __HAL_UART_ENABLE_IT(&huart6,UART_IT_IDLE);//启用串口5 空闲接受中断
+    HAL_UART_Receive_DMA(&huart6,(uint8_t *)&Desk_Data,Length_of_Desk);//使能串口5 DMA接受
   /* USER CODE END USART6_Init 2 */
 
 }
