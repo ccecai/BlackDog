@@ -18,6 +18,8 @@ float offset_front_1 = 1.41f;
 float offset_back_0  = 0.74f;//(-121.9f)
 float offset_back_1  = 1.41f;//207.2f
 
+float offset_angle = 0.0f;
+
 //用于复制上方状态数组作为永恒基准。
 DetachedParam StateDetachedParams_Copy[StatesMaxNum] = {0};
 //调试时用来改变生成的轨迹参数
@@ -86,20 +88,20 @@ void SetCoupledThetaPosition(int LegId)
     switch(LegId)
     {
         case 0:
-            AngleWant_MotorX[1] = TargetAngle2 - offset_front_1;
-            AngleWant_MotorX[2] = TargetAngle1 - offset_front_0;
+            AngleWant_MotorX[1] = TargetAngle2 - offset_front_1 - offset_angle / 180 * 4;
+            AngleWant_MotorX[2] = TargetAngle1 - offset_front_0 + offset_angle / 180 * 4;
             break;
         case 1:
-            AngleWant_MotorX[3] = TargetAngle2 - offset_back_1;//+5.0f
-            AngleWant_MotorX[4] = TargetAngle1 - offset_back_0 ;
+            AngleWant_MotorX[3] = TargetAngle2 - offset_back_1 - offset_angle / 180 * 4;//+5.0f
+            AngleWant_MotorX[4] = TargetAngle1 - offset_back_0 + offset_angle / 180 * 4;
             break;
         case 2:
-            AngleWant_MotorX[5] = -TargetAngle1 + offset_front_0 ;
-            AngleWant_MotorX[6] = -TargetAngle2 + offset_front_1 ;
+            AngleWant_MotorX[5] = -TargetAngle1 + offset_front_0 - offset_angle / 180 * 4;
+            AngleWant_MotorX[6] = -TargetAngle2 + offset_front_1 + offset_angle / 180 * 4;
             break;
         case 3:
-            AngleWant_MotorX[7] = -TargetAngle1 + offset_back_0 ;
-            AngleWant_MotorX[8] = -TargetAngle2 + offset_back_1 ;
+            AngleWant_MotorX[7] = -TargetAngle1 + offset_back_0 - offset_angle / 180 * 4;
+            AngleWant_MotorX[8] = -TargetAngle2 + offset_back_1 + offset_angle / 180 * 4;
             break;
         default:
             break;
@@ -381,26 +383,26 @@ DetachedParam state_detached_params[StatesMaxNum] = {
 
         {
                 0,//小步Trot
-                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
-                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
-                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f},
-                {17.5f, 15.0f, 4.0f, 1.0f, 0.32f, 5.0f}
+                {17.5f, 15.0f, 6.5f, 1.1f, 0.22f, 5.0f},
+                {17.5f, 15.0f, 6.5f, 1.1f, 0.22f, 5.0f},
+                {17.5f, 15.0f, 6.5f, 1.1f, 0.22f, 5.0f},
+                {17.5f, 15.0f, 6.5f, 1.1f, 0.22f, 5.0f}
         },
 
         {
                 1,//大步Trot
-                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f},
-                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f},
-                {16.2f, 10.0f, 2.0f, 1.0f, 0.25f, 3.0f},
-                {16.2f, 10.0f, 3.0f, 1.5f, 0.25f, 3.0f}
+                {16.2f, 5.0f, 6.5f, 1.1f, 0.22f, 1.5f},
+                {16.2f, 5.0f, 6.5f, 1.1f, 0.22f, 1.5f},
+                {16.2f, 5.0f, 6.5f, 1.1f, 0.22f, 1.5f},
+                {16.2f, 5.0f, 6.5f, 1.1f, 0.22f, 1.5f}
         },
 
         {
                 2,//原地踏步
-                {15.0f, 0.0f, 4.2f, 1.5f, 0.25f, 4.0f}, //小步子可以迈上去
-                {15.0f, 0.0f, 4.2f, 1.5f, 0.25f, 4.0f},
-                {15.0f, 0.0f, 4.2f, 1.5f, 0.25f, 4.0f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
-                {15.0f, 0.0f, 4.2f, 1.5f, 0.25f, 4.0f}
+                {15.0f, 0.0f, 6.5f, 1.5f, 0.25f, 4.0f}, //小步子可以迈上去
+                {15.0f, 0.0f, 6.5f, 1.5f, 0.25f, 4.0f},
+                {15.0f, 0.0f, 6.5f, 1.5f, 0.25f, 4.0f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
+                {15.0f, 0.0f, 6.5f, 1.5f, 0.25f, 4.0f}
         },
 
         {   //walk
@@ -412,10 +414,10 @@ DetachedParam state_detached_params[StatesMaxNum] = {
         },
         {   //跷跷板  这个参数之前比赛测试时是可以爬上去的（强制让前后腿的高度不一样，而不是PID）
                 4,
-                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f}, //小步子可以迈上去
-                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f},
-                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
-                {16.0f, 7.0f, 3.0f, 1.5f, 0.25f, 2.5f}
+                {16.0f, 7.0f, 6.5f, 1.5f, 0.25f, 2.5f}, //小步子可以迈上去
+                {16.0f, 7.0f, 6.5f, 1.5f, 0.25f, 2.5f},
+                {16.0f, 7.0f, 6.5f, 1.5f, 0.25f, 2.5f},// 6个参数变量为stance_height; step_length; up_amp; down_amp; flight_percent; freq
+                {16.0f, 7.0f, 6.5f, 1.5f, 0.25f, 2.5f}
         },
 };
 

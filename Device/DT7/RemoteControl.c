@@ -157,7 +157,7 @@ void sbus_to_rc(volatile const uint8_t *sbus_buf, RC_ctrl_t *rc_ctrl)
     rc_ctrl->rc.ch[3] -= RC_CH_VALUE_OFFSET;
     rc_ctrl->rc.ch[4] -= RC_CH_VALUE_OFFSET;
 }
-//
+
 
 
 void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
@@ -174,28 +174,32 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[1] > 330)
     {
+        offset_angle = 0.0f;
         Trot(Forward,1);
     }
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[1] < -330)
     {
+        offset_angle = 0.0f;
         Trot(Backward,1);
     }
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[0] > 330)
     {
+        offset_angle = 0.0f;
         Turn('r','s');
     }
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 1 && local_rc_ctrl->rc.ch[0] < -330)
     {
+        offset_angle = 0.0f;
         Turn('l','s');
     }
 
-    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3)
-    {
-        MarkingTime();
-    }
+//    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3)
+//    {
+//        MarkingTime();
+//    }
 
     else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 2 && local_rc_ctrl->rc.ch[1] > 330)
     {
@@ -219,10 +223,30 @@ void Posture_Controller(RC_ctrl_t *local_rc_ctrl)
     {
         StretchPosture();
     }
-    else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 3)
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3 && local_rc_ctrl->rc.ch[1] > 330)
     {
-        Handshake();
+        offset_angle = 20.0f;
+        Trot(Forward,1);
     }
+
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3 && local_rc_ctrl->rc.ch[1] < -330)
+    {
+        offset_angle = 20.0f;
+        Trot(Backward,1);
+    }
+
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3 && local_rc_ctrl->rc.ch[0] > 330)
+    {
+        offset_angle = 20.0f;
+        Turn('r','s');
+    }
+
+    else if(local_rc_ctrl->rc.s[1] == 3 && local_rc_ctrl->rc.s[0] == 3 && local_rc_ctrl->rc.ch[0] < -330)
+    {
+        offset_angle = 20.0f;
+        Turn('l','s');
+    }
+
     else if(local_rc_ctrl->rc.s[1] == 2 && local_rc_ctrl->rc.s[0] == 2)
     {
         StandUp_Posture_sway();

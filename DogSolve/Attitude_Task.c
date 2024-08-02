@@ -106,7 +106,7 @@ void LieDown_Posture(void)
     AllMotorSpeedLimit(SpeedNormal);
     for(int i = 1;i < 9;i ++)
     {
-        AngleWant_MotorX[i] = 0.0f;
+        AngleWant_MotorX[i] = begin_pos[i];
     }
 }
 void MarkingTime(void)
@@ -123,8 +123,8 @@ void Trot(float direction,int8_t kind)
     switch(kind)
     {
         case 0://小步Trot
-            AllMotorSpeedLimit(SpeedFast);
-            NewHeartbeat = 5;
+            AllMotorSpeedLimit(SpeedNormal);
+            NewHeartbeat = 4;
             ChangeGainOfPID(15.0f,3.0f,0.6f,0);
 //            ChangeYawOfPID(200.0f,2.0f,3000.0f,10.0f);
 //            YawControl(yawwant, &state_detached_params[4], direction);
@@ -132,8 +132,8 @@ void Trot(float direction,int8_t kind)
                           direction,direction,direction,direction);
             break;
         case 1://大步Trot
-            AllMotorSpeedLimit(SpeedFast);
-            NewHeartbeat = 5;
+            AllMotorSpeedLimit(SpeedNormal);
+            NewHeartbeat = 4;
             ChangeGainOfPID(15.0f,0.8f,0.6f,0);
 //            ChangeYawOfPID(1000.0f,10.0f,4000.0f,15.0f);
 //            YawControl(yawwant, &state_detached_params[1], direction);

@@ -28,7 +28,12 @@ void Mymain_Init(void)
     osDelay(500);
     __HAL_TIM_SetCompare(&htim4,TIM_CHANNEL_3,0);
 
-    __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,0);
+//    __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,0);
+//    osDelay(2000);
+//    __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,50);
 
+    HAL_TIM_Base_Start_IT(&htim2);
     delay_init();
+
+    osDelay(2000);
 }

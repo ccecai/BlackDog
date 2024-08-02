@@ -63,6 +63,7 @@ extern float offset_front_0;
 extern float offset_front_1;
 extern float offset_back_0 ;//(-121.9f)
 extern float offset_back_1 ;//207.2f
+extern float offset_angle;
 
 void Get_Target(float theta1,float theta2);
 void SetCoupledThetaPositionAll(void);

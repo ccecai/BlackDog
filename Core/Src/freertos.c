@@ -28,6 +28,7 @@
 #include "imu.h"
 #include "led_flow_task.h"
 #include "Screen.h"
+#include "Subordinate_Desk.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +60,7 @@ osThreadId GIM_Output_LeftHandle;
 osThreadId GIM6010InitHandle;
 osThreadId GIM_Output_RighHandle;
 osThreadId PIDHandle;
+osThreadId PwmOutHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -71,6 +73,7 @@ void GIM_OutputLeftTask(void const * argument);
 void GIM6010InitTask(void const * argument);
 void GIMOutputrightTask(void const * argument);
 void PID_Task(void const * argument);
+void PwmOutTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -158,6 +161,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(PID, PID_Task, osPriorityAboveNormal, 0, 512);
   PIDHandle = osThreadCreate(osThread(PID), NULL);
 
+  /* definition and creation of PwmOut */
+  osThreadDef(PwmOut, PwmOutTask, osPriorityLow, 0, 256);
+  PwmOutHandle = osThreadCreate(osThread(PwmOut), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
     osThreadDef(imuTask, INS_task, osPriorityRealtime, 0, 1024);
@@ -220,7 +227,7 @@ void RemoteControl(void const * argument)
        *
        ****************/
       Posture_Controller(local_rc_ctrl);
-
+      usart_printf("%d,%d\n",Desk_Data[3],Desk_Data[1]);
       osDelay(1);
   }
   /* USER CODE END RemoteControl */
@@ -328,9 +335,29 @@ void PID_Task(void const * argument)
           }
       }
 
-      osDelay(1);
+      osDelay(2);
   }
   /* USER CODE END PID_Task */
+}
+
+/* USER CODE BEGIN Header_PwmOutTask */
+/**
+* @brief Function implementing the PwmOut thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_PwmOutTask */
+void PwmOutTask(void const * argument)
+{
+  /* USER CODE BEGIN PwmOutTask */
+  /* Infinite loop */
+  for(;;)
+  {
+      Process();
+
+    osDelay(500);
+  }
+  /* USER CODE END PwmOutTask */
 }
 
 /* Private application code --------------------------------------------------*/

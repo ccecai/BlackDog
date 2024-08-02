@@ -48,7 +48,7 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-include_directories(${includes} User_Core/Inc Bsp Controller Device/BMI088 Device/DESK Device/DT7 Device/IST8310 Device/SCREEN DogSolve)
+include_directories(${includes} User_Core/Inc Bsp Controller Device/BMI088 Device/DESK Device/DT7 Device/IST8310 Device/SCREEN DogSolve Device)
 
 add_definitions(${defines})
 
